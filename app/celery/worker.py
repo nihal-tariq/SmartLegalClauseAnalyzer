@@ -1,9 +1,11 @@
-from app.celery.celery_app import celery_app
-from app.utility.embedder import embed_single_file_into_chroma
+import os
 import traceback
 import logging
-import os
 import json
+
+from app.celery.celery_app import celery_app
+from app.utility.embedder import embed_single_file_into_chroma
+
 
 # Optional: setup logging
 logging.basicConfig(

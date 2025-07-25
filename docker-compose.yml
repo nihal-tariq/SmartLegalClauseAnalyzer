@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  fastapi:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - .:/app
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
+
+  celery_worker:
+    build: .
+    container_name: celery_worker
+    depends_on:
+      - redis
+      - postgres
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    command: celery -A app.celery.worker worker --loglevel=info --pool=solo
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    env_file:
+      - .env
+    ports:
+      - "1234:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
