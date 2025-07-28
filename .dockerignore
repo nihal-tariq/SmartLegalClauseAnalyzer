@@ -1,0 +1,2 @@
+# Ignore Chroma persistent DB
+app/document_embedding/legal_chroma_db/

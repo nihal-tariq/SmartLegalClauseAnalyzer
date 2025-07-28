@@ -1,6 +1,10 @@
 # Base Python image
 FROM python:3.11-slim
 
+# Set environment variables to avoid interactive prompts and reduce image size
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
 # Set working directory
 WORKDIR /app
@@ -15,9 +19,17 @@ RUN apt-get update && apt-get install -y \
     curl && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Install pip + torch first
+RUN pip install --upgrade pip && \
+    pip install torch==2.1.0+cpu torchvision==0.16.0+cpu torchaudio==2.1.0+cpu \
+    -f https://download.pytorch.org/whl/cpu/torch_stable.html
+
+# Then install requirements
 COPY requirements.txt .
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+RUN pip install --default-timeout=300 --retries=5 --no-cache-dir -r requirements.txt
+
+# Finally copy the source code
+COPY . .
 
 # Copy application code
 COPY . .

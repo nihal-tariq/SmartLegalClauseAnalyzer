@@ -13,19 +13,21 @@ services:
       - redis
     volumes:
       - .:/app
+      - ./app/document_embedding/legal_chroma_db:/app/app/document_embedding/legal_chroma_db # <-- mount Chroma DB
     command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
 
   celery_worker:
-    build: .
-    container_name: celery_worker
-    depends_on:
-      - redis
-      - postgres
-    env_file:
-      - .env
-    volumes:
-      - .:/app
-    command: celery -A app.celery.worker worker --loglevel=info --pool=solo
+      build: .
+      container_name: celery_worker
+      depends_on:
+        - redis
+        - postgres
+      env_file:
+        - .env
+      volumes:
+        - .:/app
+        - ./app/document_embedding/legal_chroma_db:/app/app/document_embedding/legal_chroma_db # <-- same here
+      command: celery -A app.celery.worker worker --loglevel=info --pool=solo
 
   redis:
     image: redis:7
@@ -42,6 +44,7 @@ services:
       - "1234:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d
 
 volumes:
   postgres_data:
