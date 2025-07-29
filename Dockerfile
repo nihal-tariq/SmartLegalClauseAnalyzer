@@ -31,8 +31,6 @@ RUN pip install --default-timeout=300 --retries=5 --no-cache-dir -r requirements
 # Finally copy the source code
 COPY . .
 
-# Copy application code
-COPY . .
 
 # Expose FastAPI port
 EXPOSE 8001

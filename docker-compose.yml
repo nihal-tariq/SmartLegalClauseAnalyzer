@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   fastapi:
     build: .
@@ -13,21 +11,27 @@ services:
       - redis
     volumes:
       - .:/app
-      - ./app/document_embedding/legal_chroma_db:/app/app/document_embedding/legal_chroma_db # <-- mount Chroma DB
+      - ./app/document_embedding/legal_chroma_db:/app/app/document_embedding/legal_chroma_db
     command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
   celery_worker:
-      build: .
-      container_name: celery_worker
-      depends_on:
-        - redis
-        - postgres
-      env_file:
-        - .env
-      volumes:
-        - .:/app
-        - ./app/document_embedding/legal_chroma_db:/app/app/document_embedding/legal_chroma_db # <-- same here
-      command: celery -A app.celery.worker worker --loglevel=info --pool=solo
+    build: .
+    container_name: celery_worker
+    depends_on:
+      - redis
+      - postgres
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - ./app/document_embedding/legal_chroma_db:/app/app/document_embedding/legal_chroma_db
+    command: celery -A app.celery.worker worker --loglevel=info --pool=solo
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
   redis:
     image: redis:7

@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("CHATLOG_DATABASE")
+DATABASE_URL = os.getenv("CHATLOG_DATABASE", "postgresql://postgres:postgres@localhost:5432/chatlog")
 
 engine = create_engine(DATABASE_URL)
 
