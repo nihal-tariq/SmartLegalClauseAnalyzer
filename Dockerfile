@@ -28,9 +28,12 @@ RUN pip install --upgrade pip && \
 COPY requirements.txt .
 RUN pip install --default-timeout=300 --retries=5 --no-cache-dir -r requirements.txt
 
+
 # Finally copy the source code
 COPY . .
 
+# Ensure init script is executable
+RUN chmod +x /app/postgres-init/init.sql
 
 # Expose FastAPI port
 EXPOSE 8001
