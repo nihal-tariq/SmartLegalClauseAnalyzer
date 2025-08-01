@@ -3,7 +3,7 @@ version: '3.8'
 services:
   fastapi:
     build: .
-    container_name: fastapi_app
+    container_name: nihal_fastapi_app
     ports:
       - "8001:8001"
     env_file:
@@ -23,7 +23,7 @@ services:
 
   celery_worker:
     build: .
-    container_name: celery_worker
+    container_name: nihal_celery_worker
     depends_on:
       postgres:
         condition: service_healthy
@@ -41,9 +41,9 @@ services:
 
   redis:
     image: redis:7
-    container_name: redis
+    container_name: nihal_redis
     ports:
-      - "6379:6379"
+      - "6379:6378"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -52,7 +52,7 @@ services:
 
   postgres:
     image: postgres:14
-    container_name: postgres
+    container_name: nihal_postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
