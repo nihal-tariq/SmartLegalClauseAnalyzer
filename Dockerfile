@@ -36,7 +36,7 @@ COPY . .
 RUN chmod +x /app/postgres-init/init.sql
 
 # Expose FastAPI port
-EXPOSE 8001
+EXPOSE 8007
 
 # Default run command (used only if docker-compose doesn't override it)
-CMD ["uvicorn", "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8001"]
+CMD ["uvicorn", "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8007"]

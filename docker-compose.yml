@@ -5,7 +5,7 @@ services:
     build: .
     container_name: nihal_fastapi_app
     ports:
-      - "8001:8001"
+      - "8007:8007"
     env_file:
       - .env
     depends_on:
@@ -16,7 +16,7 @@ services:
     volumes:
       - .:/app
       - ./app/document_embedding/legal_chroma_db:/app/app/document_embedding/legal_chroma_db
-    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8007
     dns:
       - 8.8.8.8
       - 1.1.1.1
