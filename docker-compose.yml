@@ -43,7 +43,7 @@ services:
     image: redis:7
     container_name: nihal_redis
     ports:
-      - "6379:6378"
+      - "6380:6379"  # ✅ Changed host port to 6380
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -56,11 +56,10 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
-
     env_file:
       - .env
     ports:
-      - "1234:5432"
+      - "5433:5432"  # ✅ Changed host port to 5433
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./postgres-init:/docker-entrypoint-initdb.d
