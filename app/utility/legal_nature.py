@@ -24,7 +24,9 @@ def detect_legal_nature(query: str) -> str:
     ]
 
     check_prompt = f"""
-You are a legal assistant. Determine if the following user query is legal in nature based on whether it relates to laws, contracts, clauses, regulations, or compliance.
+    If it is a greeting than consider it legal,
+
+You are a legal assistant.  Determine if the following user query is legal in nature based on whether it relates to laws, contracts, clauses, regulations, or compliance.
 
 Use this list of legal keywords as a reference: {', '.join(legal_keywords)}
 
