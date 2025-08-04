@@ -48,7 +48,7 @@ def handle_chat_query(user_id: str, user_query: str):
         [f"User: {q}\nAssistant: {r}" for q, r in history]
     )
 
-    # ✅ STEP 4: Select the appropriate legal prompt
+    # Routing
     if intent == "DefinitionQuery":
         prompt = definition_prompt.format(
             user_query=user_query,

@@ -1,8 +1,10 @@
 import os
+import time
+
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import OperationalError
-import time
+
 from .models import Base
 
 # Create engine for maintenance database (postgres)
@@ -11,6 +13,17 @@ maint_engine = create_engine(MAINTENANCE_DB_URL)
 
 
 def ensure_database_exists():
+    """
+    Ensures that the required PostgreSQL databases exist.
+
+    This function connects to the maintenance database and checks if the
+    'chatlog' and 'legalclauseanalyzer_metadata' databases exist. If not,
+    it creates them. It retries the connection and creation process up to
+    MAX_RETRIES times, with a delay of WAIT_SECONDS between attempts.
+
+    Returns:
+        bool: True if the databases exist or were created successfully, False otherwise.
+    """
     MAX_RETRIES = 5
     WAIT_SECONDS = 3
 
@@ -43,8 +56,17 @@ DATABASE_URL = os.getenv("CHATLOG_DATABASE")
 engine = create_engine(DATABASE_URL)
 
 
-# Create tables in chatlog database
 def create_tables():
+    """
+    Creates all tables defined in the SQLAlchemy Base metadata in the target database.
+
+    This function connects to the application database (as defined by DATABASE_URL)
+    and attempts to create the tables using SQLAlchemy's `create_all()` method.
+    It retries the operation up to MAX_RETRIES times in case of connection issues.
+
+    Returns:
+        bool: True if the tables were created successfully, False otherwise.
+    """
     MAX_RETRIES = 5
     WAIT_SECONDS = 3
 

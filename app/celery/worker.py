@@ -7,7 +7,6 @@ from app.celery.celery_app import celery_app
 from app.utility.embedder import embed_single_file_into_chroma
 
 
-# Optional: setup logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(message)s"
