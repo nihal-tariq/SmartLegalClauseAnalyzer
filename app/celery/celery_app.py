@@ -14,3 +14,4 @@ celery_app = Celery(
 celery_app.conf.task_routes = {
     "app.worker.process_and_embed_document": {"queue": "default"}
 }
+

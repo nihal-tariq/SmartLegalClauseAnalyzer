@@ -1,102 +1,120 @@
-⚖️ Smart Legal Clause Analyzer (RAG-based Legal AI System)
-A production-grade Legal AI Assistant that leverages LLMs, Retrieval-Augmented Generation (RAG), and multi-format document processing to analyze legal documents, classify user intent, and generate legally informed answers.
-Built using LangChain, FastAPI, Groq (LLaMA3-70B), Gemini 2.5 Flash, Celery, HuggingFace, PostgreSQL, and Docker, this system demonstrates scalable architecture, modular design, and advanced LLM integrations.
+⚖️ Smart Legal Clause Analyzer
 
-🔗 GitLab Repository: https://gitlab.com/nihaltariq66/Smart_Legal_Clause_Analyzez.git
+RAG-based Legal AI System
 
+A production-grade Legal AI Assistant that leverages LLMs, Retrieval-Augmented Generation (RAG), and multi-format document processing to:
 
-Quick Start (Docker Setup)
+Analyze legal documents
 
+Classify user intent
+
+Generate legally informed answers
+
+🚀 Built with: LangChain, FastAPI, Groq (LLaMA3-70B), Gemini 2.5 Flash, Celery, HuggingFace, PostgreSQL, and Docker.
+Demonstrates scalable architecture, modular design, and advanced LLM integrations.
+
+🔗 Repository: GitLab – Smart Legal Clause Analyzer
+
+⚡ Quick Start (Docker Setup)
 # 1. Clone the Repository
 git clone https://gitlab.com/nihaltariq66/Smart_Legal_Clause_Analyzez.git
 cd Smart_Legal_Clause_Analyzez
 
-# 2. Create a .env file and add your API keys and DB config
+# 2. Create a .env file and add your API keys + DB config
 touch .env
 # Add GOOGLE_API_KEY, GROQ_API_KEY, CHATLOG_DATABASE, etc.
 
-# 3. Build and run the containers
+# 3. Build and run containers
 docker-compose up --build
 
 # 4. (Subsequent Runs)
 docker-compose up
 
-🧠 FastAPI runs on http://localhost:8007
 
-🐘 PostgreSQL on port 5433
+📡 Services:
 
-♻️ Redis on port 6380
+🧠 FastAPI → http://localhost:8007
 
- Project Summary
-This project delivers a multi-stage intelligent legal assistant pipeline:
+🐘 PostgreSQL → localhost:5433
 
-User uploads documents (PDF, Word, or CSV)
+♻️ Redis → localhost:6380
 
-Documents are parsed using LangChain loaders
+📜 Project Summary
 
-Text is chunked & embedded with a HuggingFace Mini LLM
+This system delivers a multi-stage intelligent legal assistant pipeline:
 
-User-specific ChromaDB collections are created alongside a main collection preloaded with hundreds of legal CSVs
+Document Uploads → PDF, Word, CSV
 
-Queries are routed through a robust classification pipeline:
+Parsing & Chunking → via LangChain loaders
 
-Legal vs Non-Legal detection via Gemini 2.5 Flash
+Embeddings & Storage → HuggingFace Mini LLM + ChromaDB (per-user + central legal DB)
 
-Zero-shot intent classification using BART MNLI (Definition, Clause Retrieval, Comparative Analysis)
+Query Classification →
 
-Context is retrieved from both user and main DB via ContextualCompressionRetriever + MultiQueryRetriever
+Legal vs Non-Legal → Gemini 2.5 Flash
 
-Final response is generated using Gemini 2.5 Flash
+Intent Classification → BART MNLI (Definition, Clause Retrieval, Comparative Analysis)
 
-All chat history is stored in PostgreSQL and can be retrieved/downloaded as JSON
+Context Retrieval → Multi-query search from User DB + Main DB
+
+Answer Generation → Gemini 2.5 Flash
+
+Logging → Chat history stored in PostgreSQL, exportable as JSON
 
 🧠 Architecture Overview
-
 flowchart TD
     A[User Uploads PDF/Word/CSV] --> B[LangChain Document Loaders]
-    B --> C[Text Chunked + Embedded via HuggingFace Mini LLM]
-    C --> D[ChromaDB Collection Created for User]
-    C --> E[Main ChromaDB Indexed with Hundreds of Legal CSVs]
+    B --> C[Chunk & Embed via HuggingFace Mini LLM]
+    C --> D[User-specific ChromaDB Collection]
+    C --> E[Main ChromaDB (Legal CSVs)]
 
-    F[User Query] --> G[Gemini 2.5 Flash: Is Legal?]
-    G -->|Yes| H[Zero-Shot Intent Classifier (BART MNLI)]
-    H --> I[Retrieve Context: User + Main DB (via LLaMA3-70B on Groq)]
-    I --> J[Context Sent to Gemini 2.5 Flash]
-    J --> K[Response Generated]
-    K --> L[Chat History Stored in PostgreSQL]
-    L --> M[Available via /chat_log and /download-chatlog]
+    F[User Query] --> G[Gemini 2.5 Flash: Legal/Non-Legal]
+    G -->|Yes| H[Intent Classifier: BART MNLI]
+    H --> I[Context Retrieval: User + Main DB]
+    I --> J[Gemini 2.5 Flash Generates Response]
+    J --> K[Response Stored in PostgreSQL]
+    K --> M[Retrieve via /chat_log & /download-chatlog]
 
-    G -->|No| N[Return Message: “Please enter a legal query”]
+    G -->|No| N[Return "Please enter a legal query"]
 
 🔬 Key Components
 📄 Document Ingestion
-Supports PDF, Word, and CSV uploads using LangChain loaders (PyMuPDFLoader, Docx2txtLoader, CSVLoader).
-Documents are chunked, embedded, and stored in user-specific ChromaDB collections, all linked to a user_id.
+
+Formats: PDF, Word, CSV
+
+Loaders: PyMuPDFLoader, Docx2txtLoader, CSVLoader
+
+Stored in user-specific ChromaDB collections, linked via user_id
 
 🧠 LLM & Retrieval Stack
-Retriever: LLaMA3-70B-8192 via Groq with ContextualCompressionRetriever + MultiQueryRetriever
 
-Legal/Non-Legal Classifier: Gemini 2.5 Flash (Google GenAI API)
+Retriever → LLaMA3-70B (Groq) + ContextualCompressionRetriever + MultiQueryRetriever
 
-Intent Classifier: facebook/bart-large-mnli with zero-shot templates
+Legal/Non-Legal Classifier → Gemini 2.5 Flash
 
-Responder: Gemini 2.5 Flash for prompt-based legal answers
+Intent Classifier → BART-MNLI (zero-shot)
 
-Embedder: HuggingFace Mini-LLM for generating dense vector embeddings
+Responder → Gemini 2.5 Flash
 
-🧩 FastAPI Endpoints
+Embedder → HuggingFace Mini-LLM
 
-⚙️ Background Task Management
-All embedding and storage tasks run via Celery workers, backed by Redis.
-Optimized for low memory usage and large document handling.
+⚙️ Background Processing
+
+Celery workers (task queue)
+
+Redis backend
+
+Handles asynchronous embedding & storage
 
 🗃️ Data Storage
-ChromaDB: Local persistent vector store with per-user collections and a central legal knowledgebase created from hundreds of CSVs.
 
-PostgreSQL: Stores file metadata and logs all chat history linked to user_id for retrieval or audit.
+ChromaDB → Persistent vector DB (per-user + central legal knowledgebase)
 
-Deployment-Ready Docker Setup
-Containerized with:
+PostgreSQL → File metadata + chat history (linked to user_id)
+
+📦 Deployment-Ready (Dockerized)
+
+✅ Containers:
 
 FastAPI
 
@@ -106,11 +124,20 @@ PostgreSQL
 
 Redis
 
-Environment-managed via .env
+✅ Features:
 
-All volumes and collections persist across reboots
+.env driven config
 
- Future Plans
- OAuth2-based user authentication
+Persistent volumes (DB + ChromaDB)
 
- Frontend with live chat + document upload
+Scalable, restart-safe setup
+
+🔮 Future Roadmap
+
+🔐 OAuth2-based authentication (User roles: Lawyer, Client, Admin)
+
+💬 Frontend with live chat + doc upload
+
+📑 Advanced legal summarization & comparison tools
+
+📊 Analytics dashboard for case trends & query insights
