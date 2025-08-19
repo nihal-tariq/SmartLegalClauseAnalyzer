@@ -1,6 +1,6 @@
 ⚖️ Smart Legal Clause Analyzer
 
-RAG-based Legal AI System
+RAG-based Legal AI System 
 
 A production-grade Legal AI Assistant that leverages LLMs, Retrieval-Augmented Generation (RAG), and multi-format document processing to:
 
