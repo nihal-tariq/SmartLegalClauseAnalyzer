@@ -1,4 +1,4 @@
-⚖️ Smart Legal Clause Analyzer
+# ⚖️ Smart Legal Clause Analyzer
 
 RAG-based Legal AI System 
 
@@ -10,28 +10,44 @@ Classify user intent
 
 Generate legally informed answers
 
-🚀 Built with: LangChain, FastAPI, Groq (LLaMA3-70B), Gemini 2.5 Flash, Celery, HuggingFace, PostgreSQL, and Docker.
+
+## Checkout: 
+
+Available at : http://209.182.234.233:8007/docs#/ 
+
+## 🚀 Built with:
+
+LangChain, FastAPI, Groq (LLaMA3-70B), Gemini 2.5 Flash, Celery, HuggingFace, PostgreSQL, and Docker.
 Demonstrates scalable architecture, modular design, and advanced LLM integrations.
 
 🔗 Repository: GitLab – Smart Legal Clause Analyzer
 
-⚡ Quick Start (Docker Setup)
-# 1. Clone the Repository
-git clone https://gitlab.com/nihaltariq66/Smart_Legal_Clause_Analyzez.git
-cd Smart_Legal_Clause_Analyzez
+## ⚡ Quick Start (Docker Setup)
 
-# 2. Create a .env file and add your API keys + DB config
-touch .env
-# Add GOOGLE_API_KEY, GROQ_API_KEY, CHATLOG_DATABASE, etc.
+### 1. Clone the Repository
 
-# 3. Build and run containers
-docker-compose up --build
+``` 
 
-# 4. (Subsequent Runs)
+git clone https://gitlab.com/divedeepai/nihal-legal-assistant.git
+
+cd Smart_Legal_Clause_Analyzez 
+
+```
+
+### 2. Create a .env file and add your API keys + DB config
+
+`touch .env`
+
+Add GOOGLE_API_KEY, GROQ_API_KEY, CHATLOG_DATABASE, etc.
+
+### 3. Build and run containers
+`docker-compose up --build`
+
+### 4. (Subsequent Runs)
 docker-compose up
 
 
-📡 Services:
+## 📡 Services:
 
 🧠 FastAPI → http://localhost:8007
 
@@ -39,7 +55,7 @@ docker-compose up
 
 ♻️ Redis → localhost:6380
 
-📜 Project Summary
+## 📜 Project Summary
 
 This system delivers a multi-stage intelligent legal assistant pipeline:
 
@@ -61,7 +77,7 @@ Answer Generation → Gemini 2.5 Flash
 
 Logging → Chat history stored in PostgreSQL, exportable as JSON
 
-🧠 Architecture Overview
+## 🧠 Architecture Overview
 flowchart TD
     A[User Uploads PDF/Word/CSV] --> B[LangChain Document Loaders]
     B --> C[Chunk & Embed via HuggingFace Mini LLM]
@@ -77,8 +93,8 @@ flowchart TD
 
     G -->|No| N[Return "Please enter a legal query"]
 
-🔬 Key Components
-📄 Document Ingestion
+## 🔬 Key Components
+### 📄 Document Ingestion
 
 Formats: PDF, Word, CSV
 
@@ -86,7 +102,7 @@ Loaders: PyMuPDFLoader, Docx2txtLoader, CSVLoader
 
 Stored in user-specific ChromaDB collections, linked via user_id
 
-🧠 LLM & Retrieval Stack
+### 🧠 LLM & Retrieval Stack
 
 Retriever → LLaMA3-70B (Groq) + ContextualCompressionRetriever + MultiQueryRetriever
 
@@ -98,7 +114,7 @@ Responder → Gemini 2.5 Flash
 
 Embedder → HuggingFace Mini-LLM
 
-⚙️ Background Processing
+### ⚙️ Background Processing
 
 Celery workers (task queue)
 
@@ -106,15 +122,15 @@ Redis backend
 
 Handles asynchronous embedding & storage
 
-🗃️ Data Storage
+### 🗃️ Data Storage
 
 ChromaDB → Persistent vector DB (per-user + central legal knowledgebase)
 
 PostgreSQL → File metadata + chat history (linked to user_id)
 
-📦 Deployment-Ready (Dockerized)
+### 📦 Deployment-Ready (Dockerized)
 
-✅ Containers:
+### ✅ Containers:
 
 FastAPI
 
@@ -124,7 +140,7 @@ PostgreSQL
 
 Redis
 
-✅ Features:
+## ✅ Features:
 
 .env driven config
 
@@ -132,7 +148,7 @@ Persistent volumes (DB + ChromaDB)
 
 Scalable, restart-safe setup
 
-🔮 Future Roadmap
+## 🔮 Future Roadmap
 
 🔐 OAuth2-based authentication (User roles: Lawyer, Client, Admin)
 
@@ -140,4 +156,3 @@ Scalable, restart-safe setup
 
 📑 Advanced legal summarization & comparison tools
 
-📊 Analytics dashboard for case trends & query insights
